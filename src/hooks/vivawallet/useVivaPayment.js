@@ -15,7 +15,6 @@ export default function usePaymentVivaWallet() {
             const response = payment.data
             setPaymentData(response)
 
-            console.log("Resposta do backend: ", response.data)
             // Redirecionar o usuário para o checkout da Viva Wallet
             if (response.orderCode) {
                 window.location.href = `https://demo.vivapayments.com/web/checkout?ref=${response.orderCode}`;
