@@ -58,6 +58,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 )}
               </div>
             </div>
+            {/* redirecionar lojas */}
             <RedirecionarLojas />
             {/* feature category's */}
             {storeCustomizationSetting?.home?.featured_status && (

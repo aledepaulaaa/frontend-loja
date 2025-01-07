@@ -56,16 +56,7 @@ const useCheckoutSubmit = (storeSetting) => {
     data?.shippingAddress &&
     Object.keys(data?.shippingAddress)?.length > 0;
 
-  // console.log("storeSetting", storeSetting);
-
-  // console.log("res", data);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
   useEffect(() => {
     if (Cookies.get("couponInfo")) {
@@ -87,37 +78,33 @@ const useCheckoutSubmit = (storeSetting) => {
   }, [minimumAmount, total]);
 
   //calculate total and discount value
-  //calculate total and discount value
   useEffect(() => {
     const discountProductTotal = items?.reduce(
-      (preValue, currentValue) => preValue + currentValue.itemTotal,
-      0
-    );
+      (preValue, currentValue) => preValue + currentValue.itemTotal, 0);
 
     let totalValue = 0;
-    const subTotal = parseFloat(cartTotal + Number(shippingCost)).toFixed(2);
-    const discountAmount =
-      discountPercentage?.type === "fixed"
-        ? discountPercentage?.value
-        : discountProductTotal * (discountPercentage?.value / 100);
+    const subTotal = parseFloat(cartTotal + Number(shippingCost));
+    const discountAmount = discountPercentage?.type === "fixed"
+      ? discountPercentage?.value
+      : discountProductTotal * (discountPercentage?.value / 100);
 
     const discountAmountTotal = discountAmount ? discountAmount : 0;
-
     totalValue = Number(subTotal) - discountAmountTotal;
 
     setDiscountAmount(discountAmountTotal);
-
     // console.log("total", totalValue);
 
     setTotal(totalValue);
   }, [cartTotal, shippingCost, discountPercentage]);
 
+  // Converte o valor total para centavos
+  const totalPrice = Math.round(total * 100)
+
+  // Mapear items para exibir nome e preço do produto em merchantTrns
+  const nameProducts = items.map(item => item.slug).join(', ');
+  
   const submitHandler = async (data) => {
-    // console.log("Data em SubmitHandler", data);
-    // return;
     try {
-      // dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
-      // Cookies.set("shippingAddress", JSON.stringify(data));
       setIsCheckoutSubmit(true);
       setError("");
 
@@ -144,8 +131,8 @@ const useCheckoutSubmit = (storeSetting) => {
       };
 
       const orderPaymentData = {
-        "amount": total,
-        "customerTrns": "Descrição simples do que esta sendo pago",
+        "amount": totalPrice,
+        "customerTrns": nameProducts,
         "customer": {
           "email": userDetails.email,
           "fullName": userDetails.name,
@@ -163,10 +150,9 @@ const useCheckoutSubmit = (storeSetting) => {
         "disableCash": true,
         "disableWallet": true,
         "sourceCode": "Default",
-        "merchantTrns": items,
-        "tags": ["tag1", "tag2"],
-        "cardTokens": [],
       }
+
+      console.log("Dados de Pagamento: ", orderPaymentData);
 
       await useVivaPayment(orderPaymentData);
 

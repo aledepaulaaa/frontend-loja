@@ -4,24 +4,30 @@ import { Dialog, Transition } from "@headlessui/react";
 export default function RedirecionarLojas() {
     const [open, setOpen] = React.useState(false);
 
-    const lojaPortimao = "https://pizzasdojapa.ola.click/products";
-    const lojaMexilhoeira = "https://japizza.ola.click/products";
+    const coordeNadasPortimão = `37°08'12.6"N 8°32'25.6"W`;
+    const coordeNadasMexilhoeira = `37°09'30.3"N 8°36'51.5"W`;
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
+    const handleClose = (loja) => {
+        if (loja === "portimao") {
+            localStorage.setItem("coordenadas_portimao", coordeNadasPortimão);
+        } else if (loja === "mexilhoeira") {
+            localStorage.setItem("coordenadas_mexilhoeira", coordeNadasMexilhoeira);
+        }
+        localStorage.setItem("escolha_feita", "true");
         setOpen(false);
     };
 
     useEffect(() => {
-        handleOpen(); // Abre o diálogo ao carregar a página
+        if (localStorage.getItem("escolha_feita") === "true") {
+            setOpen(false);
+        } else {
+            setOpen(true);
+        }
     }, []);
 
     return (
         <Transition appear show={open} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={handleClose}>
+            <Dialog as="div" className="relative z-10" onClose={() => { }}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -53,10 +59,7 @@ export default function RedirecionarLojas() {
                                         <button
                                             type="button"
                                             className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                            onClick={() => {
-                                                window.location.href = lojaPortimao;
-                                                handleClose();
-                                            }}
+                                            onClick={() => { handleClose("portimao") }}
                                         >
                                             <p className="font-bold">
                                                 Portimão
@@ -67,10 +70,7 @@ export default function RedirecionarLojas() {
                                         <button
                                             type="button"
                                             className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-                                            onClick={() => {
-                                                window.location.href = lojaMexilhoeira;
-                                                handleClose();
-                                            }}
+                                            onClick={() => { handleClose("mexilhoeira") }}
                                         >
                                             <p className="font-bold">
                                                 Mexilhoeira

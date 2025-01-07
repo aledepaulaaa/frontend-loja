@@ -32,6 +32,7 @@ const Checkout = () => {
   const { showingTranslateValue } = useUtilsFunction();
   const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
   const [loading, setLoading] = useState(false);
+  const [lojaselecioanda, setLojaSelecionada] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [address, setAddress] = useState({
     street: "",
@@ -55,6 +56,7 @@ const Checkout = () => {
       async (position) => {
         try {
           const { latitude, longitude } = position.coords;
+          console.log("Latitude:", latitude, "Longitude:", longitude);
 
           const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
@@ -90,11 +92,26 @@ const Checkout = () => {
       },
       {
         enableHighAccuracy: true,
-        timeout: 5000,
+        timeout: 10000,
         maximumAge: 0
       }
     );
   };
+
+  // Buscar no localStorage a loja escolhida e atualizar com o hook
+  const getStoreSelected = () => {
+    const loja = localStorage.getItem("coordenadas_mexilhoeira");
+    if (loja === `37°09'30.3"N 8°36'51.5"W`) {
+      setLojaSelecionada("Mexilhoeira");
+    } else if (loja === `37°08'12.6"N 8°32'25.6"W`) {
+      setLojaSelecionada("Portimão");
+    }
+  }
+
+  React.useEffect(() => {
+    getStoreSelected()
+  }, [])
+
 
   const {
     error,
@@ -338,13 +355,17 @@ const Checkout = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="form-group mt-12">
                     <h2 className="font-semibold text-base text-gray-700 pb-3">
-                      03.{" "}
-                      {showingTranslateValue(
+                      03. Loja Selecionada
+                      {/* {showingTranslateValue(
                         storeCustomizationSetting?.checkout?.payment_method
-                      )}
+                      )} */}
                     </h2>
+                    <p className="text-white font-semibold w-60 bg-emerald-500 py-2 px-4 rounded">
+                      {lojaselecioanda}
+                    </p>
                     {showCard && (
                       <div className="mb-3">
                         <CardElement />{" "}
@@ -377,7 +398,6 @@ const Checkout = () => {
                           <Error errorMessage={errors.paymentMethod} />
                         </div>
                       )}
-                      
                       {/* {storeSetting?.razorpay_status && ( */}
                       {/* RazorPay */}
                       {/* <div className="">
