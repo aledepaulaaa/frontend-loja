@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 
 const urlDevelopment = process.env.DEV_URL_PAYMENT
-const urlProduction = process.env.URL_PAYMENT
+const urlProduction = process.env.NEXT_PUBLIC_PRODUCTION_URL_PAYMENT
 const urlCheckout = process.env.URL_CHECKOUT
 
 export default function usePaymentVivaWallet() {
