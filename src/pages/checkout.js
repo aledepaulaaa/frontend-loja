@@ -110,6 +110,7 @@ const Checkout = () => {
 
   React.useEffect(() => {
     getStoreSelected()
+    console.log("Loja: ", lojaselecioanda)
   }, [lojaselecioanda])
 
 
