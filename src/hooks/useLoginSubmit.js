@@ -27,30 +27,6 @@ const useLoginSubmit = () => {
     formState: { errors },
   } = useForm();
 
-  // const submitHandleLogin = async (e) => {
-  //   e.preventDefault()
-  //   setLoading(true);
-  //   try {
-  //     const loginData = { email: user.email, password: user.password }
-  //     const result = await axios.post("", loginData , {
-  //       headers: {
-  //         ContentType: 'application/json',
-  //       }
-  //     })
-  //     if (result.status === 201) {
-  //       router.push("/user/dashboard");
-  //       notifySuccess("Login realizado com sucesso!");
-  //     } else {
-  //       notifyError(result.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.log("Erro ao tentar fazer login", error);
-  //     notifyError("Houve um problema ao fazer login.");
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // };
-
   const submitHandler = async () => {
     setLoading(true);
     const result = await signIn("credentials", {
