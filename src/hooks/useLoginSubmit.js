@@ -19,7 +19,7 @@ const useLoginSubmit = () => {
     password: "",
   });
   const redirectUrl = useSearchParams().get("redirectUrl");
-  const registerUrl = process.env.NEXT_PUBLIC_REGISTER_URL
+  const registerUrl = process.env.NEXT_PUBLIC_REGISTER_URL // Production url
 
   const {
     register,
