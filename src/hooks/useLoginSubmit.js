@@ -46,7 +46,6 @@ const useLoginSubmit = () => {
     } else if (result?.ok) {
       const url = redirectUrl ? "/checkout" : result.url;
       console.log("url", url);
-      router.push(url);
     }
   };
 
