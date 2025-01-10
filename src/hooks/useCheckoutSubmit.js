@@ -102,7 +102,9 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Mapear items para exibir nome e preço do produto em merchantTrns
   const nameProducts = items.map(item => item.slug).join(', ');
-  
+  // Obter nome da loja selecionada do localStorage de acordo com as coordenadas para carrega-la
+  const lojaSelecionada = localStorage.getItem("coordenadas_mexilhoeira") ? "Mexilhoeira" : "Portimão";
+
   const submitHandler = async (data) => {
     try {
       setIsCheckoutSubmit(true);
@@ -132,7 +134,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
       const orderPaymentData = {
         "amount": totalPrice,
-        "customerTrns": nameProducts,
+        "customerTrns": `Loja: ${lojaSelecionada}`,
         "customer": {
           "email": userDetails.email,
           "fullName": userDetails.name,
@@ -151,8 +153,6 @@ const useCheckoutSubmit = (storeSetting) => {
         "disableWallet": true,
         "sourceCode": "Default",
       }
-
-      console.log("Dados de Pagamento: ", orderPaymentData);
 
       await useVivaPayment(orderPaymentData);
 
@@ -220,9 +220,9 @@ const useCheckoutSubmit = (storeSetting) => {
         notifySuccess("Your Order Confirmed!");
         Cookies.remove("couponInfo");
 
-        emptyCart();
         setIsCheckoutSubmit(false);
       }
+      emptyCart();
     } catch (err) {
       notifyError(err ? err?.response?.data?.message : err?.message);
       setIsCheckoutSubmit(false);
@@ -444,6 +444,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
   return {
     register,
+    emptyCart,
     errors,
     showCard,
     setShowCard,

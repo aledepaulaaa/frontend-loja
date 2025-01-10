@@ -6,10 +6,10 @@ import Error from "@components/form/Error";
 import useLoginSubmit from "@hooks/useLoginSubmit";
 import InputArea from "@components/form/InputArea";
 import BottomNavigation from "@components/login/BottomNavigation";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
-  const { handleSubmit, submitHandler, register, errors, loading } =
-    useLoginSubmit();
+  const { user, handleSubmit, submitHandler, setUser, showPass, setShowPass, register, errors, loading } = useLoginSubmit();
 
   return (
     <Layout title="Login" description="This is login page">
@@ -32,28 +32,36 @@ const Login = () => {
                     <div className="form-group">
                       <InputArea
                         register={register}
-                        defaultValue="justin@gmail.com"
                         label="Email"
                         name="email"
                         type="email"
                         placeholder="Email"
+                        value={user.email || ""}
                         Icon={FiMail}
                         autocomplete="email"
+                        onChange={(e) => setUser({ ...user, email: e.target.value })}
                       />
                       <Error errorName={errors.email} />
                     </div>
                     <div className="form-group">
                       <InputArea
                         register={register}
-                        defaultValue="12345678"
                         label="Password"
                         name="password"
-                        type="password"
+                        type={showPass ? "text" : "password"}
                         placeholder="Password"
                         Icon={FiLock}
+                        value={user.password || ""}
                         autocomplete="current-password"
+                        onChange={(e) => setUser({ ...user, password: e.target.value })}
                       />
-
+                      <button
+                        type="button"
+                        className="text-gray-950 absolute inset-y-0 right-0 pr-14 top-12 flex items-center text-sm"
+                        onClick={() => setShowPass(!showPass)}
+                      >
+                        {showPass ? (<AiFillEyeInvisible />) : (<AiFillEye />)}
+                      </button>
                       <Error errorName={errors.password} />
                     </div>
 

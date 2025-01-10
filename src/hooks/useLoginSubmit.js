@@ -3,15 +3,23 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import axios from "axios"
 
 //internal import
 
-import { notifyError } from "@utils/toast";
+import { notifyError, notifySuccess } from "@utils/toast";
 
 const useLoginSubmit = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const redirectUrl = useSearchParams().get("redirectUrl");
+  const registerUrl = process.env.NEXT_PUBLIC_DEV_REGISTER_URL
 
   const {
     register,
@@ -19,17 +27,40 @@ const useLoginSubmit = () => {
     formState: { errors },
   } = useForm();
 
-  const submitHandler = async ({ email, password }) => {
+  // const submitHandleLogin = async (e) => {
+  //   e.preventDefault()
+  //   setLoading(true);
+  //   try {
+  //     const loginData = { email: user.email, password: user.password }
+  //     const result = await axios.post("", loginData , {
+  //       headers: {
+  //         ContentType: 'application/json',
+  //       }
+  //     })
+  //     if (result.status === 201) {
+  //       router.push("/user/dashboard");
+  //       notifySuccess("Login realizado com sucesso!");
+  //     } else {
+  //       notifyError(result.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.log("Erro ao tentar fazer login", error);
+  //     notifyError("Houve um problema ao fazer login.");
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // };
+
+  const submitHandler = async () => {
     setLoading(true);
     const result = await signIn("credentials", {
       redirect: false, // Changed to false to handle redirection manually
-      email,
-      password,
+      email: user.email,
+      password: user.password,
       callbackUrl: "/user/dashboard",
     });
 
     setLoading(false);
-    // console.log("result", result, "redirectUrl", redirectUrl);
 
     if (result?.error) {
       notifyError(result?.error);
@@ -41,12 +72,41 @@ const useLoginSubmit = () => {
     }
   };
 
+  const submitHandlerRegister = async (e) => {
+    e.preventDefault()
+    setLoading(true);
+    try {
+      const result = await axios.post(registerUrl, user, {
+        headers: {
+          ContentType: 'application/json',
+        }
+      });
+      if (result.status === 201) {
+        notifySuccess(result.data.message);
+        router.push("/user/dashboard");
+        setUser({});
+      } else {
+        notifyError(result.data.message);
+      }
+    } catch (error) {
+      console.log("Erro ao tentar criar conta", error);
+      notifyError("Houve um problema ao criar a conta.");
+    } finally {
+      setLoading(false)
+    }
+  };
+
   return {
+    user,
+    setUser,
     register,
     errors,
     loading,
     handleSubmit,
     submitHandler,
+    showPass,
+    setShowPass,
+    submitHandlerRegister,
   };
 };
 

@@ -6,11 +6,20 @@ import Error from "@components/form/Error";
 import InputArea from "@components/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";
 import BottomNavigation from "@components/login/BottomNavigation";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Link from "next/link";
 
 const SignUp = () => {
-  const { handleSubmit, submitHandler, register, errors, loading } =
-    useLoginSubmit();
+  const {
+    user,
+    setShowPass,
+    showPass,
+    setUser,
+    register,
+    submitHandlerRegister,
+    errors,
+    loading
+  } = useLoginSubmit();
 
   return (
     <Layout title="Signup" description="this is sign up page">
@@ -26,18 +35,20 @@ const SignUp = () => {
                   </p>
                 </div>
                 <form
-                  onSubmit={handleSubmit(submitHandler)}
                   className="flex flex-col justify-center mb-6"
+                  onSubmit={submitHandlerRegister}
                 >
                   <div className="grid grid-cols-1 gap-5">
-                    {/* <div className="form-group">
+                    <div className="form-group">
                       <InputArea
                         register={register}
                         label="Name"
                         name="name"
                         type="text"
                         placeholder="Full Name"
+                        value={user.name || ""}
                         Icon={FiUser}
+                        onChange={(e) => setUser({ ...user, name: e.target.value })}
                       />
 
                       <Error errorName={errors.name} />
@@ -50,24 +61,34 @@ const SignUp = () => {
                         name="email"
                         type="email"
                         placeholder="Email"
+                        value={user.email || ""}
+                        onChange={(e) => setUser({ ...user, email: e.target.value })}
                         Icon={FiMail}
                       />
-                      <Error errorName={errors.email} />
+                      <Error errorName={errors.email || ""} />
                     </div>
-                    <div className="form-group">
-                      <InputArea
-                        register={register}
-                        label="Password"
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        Icon={FiLock}
-                      />
-
+                    <div className="form-group relative">
+                        <InputArea
+                          register={register}
+                          label="Password"
+                          name="password"
+                          type={showPass ? "text" : "password"}
+                          value={user.password || ""}
+                          onChange={(e) => setUser({ ...user, password: e.target.value })}
+                          placeholder="Password"
+                          Icon={FiLock}
+                        />
+                        <button
+                          type="button"
+                          className="text-gray-950 absolute inset-y-0 right-0 pr-3 top-5 flex items-center text-sm"
+                          onClick={() => setShowPass(!showPass)}
+                        >
+                          {showPass ? (<AiFillEyeInvisible />) : (<AiFillEye />)}
+                        </button>
                       <Error errorName={errors.password} />
-                    </div> */}
+                    </div>
 
-                    {/* <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between">
                       <div className="flex ms-auto">
                         <Link
                           href="/auth/forget-password"
@@ -76,11 +97,10 @@ const SignUp = () => {
                           Forgot password?
                         </Link>
                       </div>
-                    </div> */}
-                    {/* {loading ? (
+                    </div>
+                    {loading ? (
                       <button
                         disabled={loading}
-                        type="submit"
                         className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-emerald-500 text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-emerald-600 h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
                       >
                         <img
@@ -101,7 +121,7 @@ const SignUp = () => {
                       >
                         Register
                       </button>
-                    )} */}
+                    )}
                   </div>
                 </form>
                 <BottomNavigation
