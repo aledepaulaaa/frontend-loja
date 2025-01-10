@@ -20,6 +20,7 @@ const useLoginSubmit = () => {
   });
   const redirectUrl = useSearchParams().get("redirectUrl");
   const registerUrl = process.env.NEXT_PUBLIC_REGISTER_URL // Production url
+  const registerUrlDev = process.env.NEXT_PUBLIC_DEV_REGISTER_URL // Production url
 
   const {
     register,
@@ -44,6 +45,7 @@ const useLoginSubmit = () => {
       // Handle error display here
     } else if (result?.ok) {
       const url = redirectUrl ? "/checkout" : result.url;
+      console.log("url", url);
       router.push(url);
     }
   };

@@ -5,7 +5,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCart } from "react-use-cart";
 import useRazorpay from "react-razorpay";
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 //internal import
 import useAsync from "./useAsync";
@@ -33,10 +32,9 @@ const useCheckoutSubmit = (storeSetting) => {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [useExistingAddress, setUseExistingAddress] = useState(false);
   const [isCouponAvailable, setIsCouponAvailable] = useState(false);
+  const [lojaSelecionada, setLojaSelecionada] = useState("");
 
   const router = useRouter();
-  const stripe = useStripe();
-  const elements = useElements();
   const couponRef = useRef("");
   const [Razorpay] = useRazorpay();
   const { isEmpty, emptyCart, items, cartTotal } = useCart();
@@ -99,12 +97,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Converte o valor total para centavos
   const totalPrice = Math.round(total * 100)
-
-  // Mapear items para exibir nome e preço do produto em merchantTrns
-  const nameProducts = items.map(item => item.slug).join(', ');
-  // Obter nome da loja selecionada do localStorage de acordo com as coordenadas para carrega-la
-  const lojaSelecionada = localStorage.getItem("coordenadas_mexilhoeira") ? "Mexilhoeira" : "Portimão";
-
+ 
   const submitHandler = async (data) => {
     try {
       setIsCheckoutSubmit(true);
@@ -169,200 +162,11 @@ const useCheckoutSubmit = (storeSetting) => {
           zipCode: data.zipCode,
         },
       });
-
-      if (data.paymentMethod === "Card") {
-        if (!stripe || !elements) {
-          return;
-        }
-
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-          type: "card",
-          card: elements.getElement(CardElement),
-        });
-
-        // console.log('error', error);
-
-        if (error && !paymentMethod) {
-          setError(error.message);
-          setIsCheckoutSubmit(false);
-        } else {
-          setError("");
-          const orderData = {
-            ...orderInfo,
-            cardInfo: paymentMethod,
-          };
-
-          await handlePaymentWithStripe(orderData);
-
-          // console.log('cardInfo', orderData);
-          return;
-        }
-      }
-      if (data.paymentMethod === "RazorPay") {
-        await handlePaymentWithRazorpay(orderInfo);
-      }
-      if (data.paymentMethod === "Cash") {
-        const orderResponse = await OrderServices.addOrder(orderInfo);
-
-        // notification info
-        const notificationInfo = {
-          orderId: orderResponse?._id,
-          message: `${orderResponse?.user_info?.name}, Placed ${parseFloat(
-            orderResponse?.total
-          ).toFixed(2)} order!`,
-          image:
-            "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
-        };
-        // notification api call
-        await NotificationServices.addNotification(notificationInfo);
-
-        router.push(`/order/${orderResponse?._id}`);
-        notifySuccess("Your Order Confirmed!");
-        Cookies.remove("couponInfo");
-
-        setIsCheckoutSubmit(false);
-      }
+      
       emptyCart();
     } catch (err) {
       notifyError(err ? err?.response?.data?.message : err?.message);
       setIsCheckoutSubmit(false);
-    }
-  };
-
-  //handle stripe payment
-
-  const handlePaymentWithStripe = async (order) => {
-    try {
-      // console.log('try goes here!', order);
-      // const updatedOrder = {
-      //   ...order,
-      //   currency: 'usd',
-      // };
-      const stripeInfo = await OrderServices.createPaymentIntent(order);
-      // console.log("res", stripeInfo, "order", order);
-      stripe.confirmCardPayment(stripeInfo?.client_secret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-        },
-      });
-
-      const orderData = {
-        ...order,
-        cardInfo: stripeInfo,
-      };
-      const orderResponse = await OrderServices.addOrder(orderData);
-      console.log("orderResponse", orderResponse);
-      // notification info
-      const notificationInfo = {
-        orderId: orderResponse._id,
-        message: `${orderResponse.user_info.name}, Placed ${parseFloat(
-          orderResponse.total
-        ).toFixed(2)} order!`,
-        image:
-          "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
-      };
-      // notification api call
-      await NotificationServices.addNotification(notificationInfo);
-
-      router.push(`/order/${orderResponse._id}`);
-      notifySuccess("Your Order Confirmed!");
-      Cookies.remove("couponInfo");
-      emptyCart();
-
-      setIsCheckoutSubmit(false);
-    } catch (err) {
-      // console.log("err", err?.message);
-      notifyError(err?.response?.data?.message || err?.message);
-      setIsCheckoutSubmit(false);
-    }
-  };
-
-  //handle razorpay payment
-  const handlePaymentWithRazorpay = async (orderInfo) => {
-    try {
-      const { amount, id, currency } =
-        await OrderServices.createOrderByRazorPay({
-          amount: Math.round(total).toString(),
-        });
-
-      // console.log("amount:::", amount);
-      // setIsCheckoutSubmit(false);
-
-      if ((amount, id, currency)) {
-        const razorpayKey = storeSetting?.razorpay_id;
-
-        // console.log("razorpayKey", razorpayKey);
-
-        const options = {
-          key: razorpayKey,
-          amount: amount,
-          currency: currency,
-          name: "Fably Store",
-          description: "This is total cost of your purchase",
-          order_id: id,
-          handler: async function (response) {
-            const razorpay = {
-              amount: total,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpaySignature: response.razorpay_signature,
-            };
-
-            const orderData = {
-              ...orderInfo,
-              total: total,
-              cardCharge: cardCharge,
-              razorpay,
-            };
-
-            const res = await OrderServices.addRazorpayOrder(orderData);
-            if (res) {
-              router.push(`/order/${res._id}`);
-              notifySuccess("Your Order Confirmed!");
-              Cookies.remove("couponInfo");
-              localStorage.removeItem("products");
-              emptyCart();
-
-              await NotificationServices.addNotification({
-                message: `${data?.firstName} placed $${total} order!`,
-                orderId: res._id,
-                image: userInfo?.image,
-              });
-              socket.emit("notification", {
-                message: `${data.firstName} placed $${total} order!`,
-                orderId: res._id,
-                image: userInfo?.image,
-              });
-            }
-          },
-
-          modal: {
-            ondismiss: function () {
-              setTotal(total);
-              setIsCheckoutSubmit(false);
-              console.log("Checkout form closed!");
-            },
-          },
-
-          prefill: {
-            name: "Alamgir",
-            email: "alamgirh389@example.com",
-            contact: "01957434434",
-          },
-          notes: {
-            address: "Mumbai, India",
-          },
-          theme: {
-            color: "#10b981",
-          },
-        };
-
-        const rzpay = new Razorpay(options);
-        rzpay.open();
-      }
-    } catch (err) {
-      setIsCheckoutSubmit(false);
-      notifyError(err.message);
     }
   };
 
@@ -442,14 +246,28 @@ const useCheckoutSubmit = (storeSetting) => {
     }
   };
 
+    // Buscar no localStorage a loja escolhida e atualizar com o hook
+    const getStoreSelected = () => {
+      const loja = localStorage.getItem("coordenadas_mexilhoeira");
+      if (loja === `37°09'30.3"N 8°36'51.5"W`) {
+        setLojaSelecionada("Mexilhoeira");
+      } else if (loja === `37°08'12.6"N 8°32'25.6"W`) {
+        setLojaSelecionada("Portimão");
+      }
+    }
+  
+    useEffect(() => {
+      getStoreSelected()
+    }, [lojaSelecionada])
+
   return {
     register,
     emptyCart,
+    lojaSelecionada,
     errors,
     showCard,
     setShowCard,
     error,
-    stripe,
     couponInfo,
     couponRef,
     total,

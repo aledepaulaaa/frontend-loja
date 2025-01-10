@@ -32,7 +32,6 @@ const Checkout = () => {
   const { showingTranslateValue } = useUtilsFunction();
   const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
   const [loading, setLoading] = useState(false);
-  const [lojaselecioanda, setLojaSelecionada] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [address, setAddress] = useState({
     street: "",
@@ -98,21 +97,6 @@ const Checkout = () => {
     );
   };
 
-  // Buscar no localStorage a loja escolhida e atualizar com o hook
-  const getStoreSelected = () => {
-    const loja = localStorage.getItem("coordenadas_mexilhoeira");
-    if (loja === `37°09'30.3"N 8°36'51.5"W`) {
-      setLojaSelecionada("Mexilhoeira");
-    } else if (loja === `37°08'12.6"N 8°32'25.6"W`) {
-      setLojaSelecionada("Portimão");
-    }
-  }
-
-  React.useEffect(() => {
-    getStoreSelected()
-  }, [lojaselecioanda])
-
-
   const {
     error,
     stripe,
@@ -127,6 +111,7 @@ const Checkout = () => {
     errors,
     showCard,
     setShowCard,
+    lojaSelecionada,
     handleSubmit,
     submitHandler,
     handleShippingCost,
@@ -364,7 +349,7 @@ const Checkout = () => {
                       )} */}
                     </h2>
                     <p className="text-white font-semibold w-60 bg-emerald-500 py-2 px-4 rounded">
-                      {lojaselecioanda}
+                      {lojaSelecionada}
                     </p>
                     {showCard && (
                       <div className="mb-3">
