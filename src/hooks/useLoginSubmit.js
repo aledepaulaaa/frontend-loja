@@ -41,13 +41,12 @@ const useLoginSubmit = () => {
       setLoading(false);
       // console.log("result", result, "redirectUrl", redirectUrl);
 
-      if (result.status === 401) {
-        notifyError("Problema ao fazer login, verifique suas credenciais.");
-        console.log("Erro ao tentar fazer login:", result.error);
+      if (result?.error) {
+        notifyError(result?.error);
+        console.error("Error during sign-in:", result.error);
         // Handle error display here
       } else if (result?.ok) {
         const url = redirectUrl ? "/checkout" : result.url;
-        console.log("url", url);
         router.push(url);
       }
     } catch (error) {
