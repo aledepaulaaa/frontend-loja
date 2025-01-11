@@ -38,7 +38,7 @@ const useLoginSubmit = () => {
         callbackUrl: "/user/dashboard",
       });
 
-      // console.log("result", result, "redirectUrl", redirectUrl);
+      console.log("result", result, "redirectUrl", redirectUrl);
 
       if (result?.error) {
         notifyError(result?.error);
