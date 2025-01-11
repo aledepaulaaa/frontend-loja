@@ -99,7 +99,7 @@ export const getDynamicAuthOptions = async () => {
         return session;
       },
       async redirect({ url, baseUrl }) {
-        // console.log("url", url, "baseUrl", baseUrl);
+        console.log("url", url, "baseUrl", baseUrl);
         return url.startsWith(baseUrl) ? url : `${baseUrl}/user/dashboard`;
       },
     },
