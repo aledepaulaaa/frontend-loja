@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { useCart } from 'react-use-cart'
 
 const urlDevelopment = process.env.NEXT_PUBLIC_DEV_URL_PAYMENT
 const urlProduction = process.env.NEXT_PUBLIC_PRODUCTION_URL_PAYMENT
@@ -7,14 +8,19 @@ const urlProduction = process.env.NEXT_PUBLIC_PRODUCTION_URL_PAYMENT
 export default function usePaymentVivaWallet() {
     const [error, setError] = React.useState(null)
     const [paymentData, setPaymentData] = React.useState(null)
+    const { emptyCart } = useCart()
 
     // Função para gerar o token no servidor e gerar o pagamento
     const useVivaPayment = async (paymentData) => {
         try {
-            const payment = await axios.post(urlDevelopment, paymentData)
-            const response = payment.data
-            setPaymentData(response)
+            const payment = await axios.post(urlProduction, paymentData)
 
+            if(payment.status === 200){
+                emptyCart()
+                setPaymentData(response)
+            }
+
+            const response = payment.data
             // Redirecionar o usuário para o checkout da Viva Wallet
             if (response.orderCode) {
                 window.location.href = `https://demo.vivapayments.com/web/checkout?ref=${response.orderCode}`;

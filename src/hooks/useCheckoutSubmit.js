@@ -37,7 +37,7 @@ const useCheckoutSubmit = (storeSetting) => {
   const router = useRouter();
   const couponRef = useRef("");
   const [Razorpay] = useRazorpay();
-  const { isEmpty, emptyCart, items, cartTotal } = useCart();
+  const { isEmpty, items, cartTotal } = useCart();
 
   const { useVivaPayment } = usePaymentVivaWallet();
 
@@ -99,7 +99,6 @@ const useCheckoutSubmit = (storeSetting) => {
   const totalPrice = Math.round(total * 100)
  
   const submitHandler = async (data) => {
-    console.log('Submit chamado');
 
     try {
       setIsCheckoutSubmit(true);
@@ -165,7 +164,6 @@ const useCheckoutSubmit = (storeSetting) => {
         },
       });
       
-      emptyCart();
     } catch (err) {
       notifyError(err ? err?.response?.data?.message : err?.message);
       setIsCheckoutSubmit(false);
@@ -202,6 +200,8 @@ const useCheckoutSubmit = (storeSetting) => {
       setValue("zipCode");
     }
   };
+
+
   const handleCouponCode = async (e) => {
     e.preventDefault();
 
