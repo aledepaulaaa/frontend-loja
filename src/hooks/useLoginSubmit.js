@@ -28,16 +28,17 @@ const useLoginSubmit = () => {
     formState: { errors },
   } = useForm();
 
-  const submitHandler = async () => {
+  const submitHandler = async ({ email, password }) => {
     setLoading(true);
     const result = await signIn("credentials", {
       redirect: false, // Changed to false to handle redirection manually
-      email: user.email,
-      password: user.password,
+      email,
+      password,
       callbackUrl: "/user/dashboard",
     });
 
     setLoading(false);
+    // console.log("result", result, "redirectUrl", redirectUrl);
 
     if (result?.error) {
       notifyError(result?.error);
@@ -45,7 +46,6 @@ const useLoginSubmit = () => {
       // Handle error display here
     } else if (result?.ok) {
       const url = redirectUrl ? "/checkout" : result.url;
-      console.log("url", url);
       router.push(url);
     }
   };

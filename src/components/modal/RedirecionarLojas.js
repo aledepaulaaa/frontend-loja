@@ -9,9 +9,9 @@ export default function RedirecionarLojas() {
 
     const handleClose = (loja) => {
         if (loja === "portimao") {
-            localStorage.setItem("coordenadas_portimao", coordeNadasPortimão);
+            localStorage.setItem("portimao", coordeNadasPortimão);
         } else if (loja === "mexilhoeira") {
-            localStorage.setItem("coordenadas_mexilhoeira", coordeNadasMexilhoeira);
+            localStorage.setItem("mexilhoeira", coordeNadasMexilhoeira);
         }
         localStorage.setItem("escolha_feita", "true");
         setOpen(false);

@@ -36,10 +36,8 @@ const Login = () => {
                         name="email"
                         type="email"
                         placeholder="Email"
-                        value={user.email || ""}
                         Icon={FiMail}
                         autocomplete="email"
-                        onChange={(e) => setUser({ ...user, email: e.target.value })}
                       />
                       <Error errorName={errors.email} />
                     </div>
@@ -51,9 +49,7 @@ const Login = () => {
                         type={showPass ? "text" : "password"}
                         placeholder="Password"
                         Icon={FiLock}
-                        value={user.password || ""}
                         autocomplete="current-password"
-                        onChange={(e) => setUser({ ...user, password: e.target.value })}
                       />
                       <button
                         type="button"

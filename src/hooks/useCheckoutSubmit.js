@@ -248,7 +248,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
     // Buscar no localStorage a loja escolhida e atualizar com o hook
     const getStoreSelected = () => {
-      const loja = localStorage.getItem("coordenadas_mexilhoeira");
+      const loja = localStorage.getItem("mexilhoeira" ? "mexilhoeira" : "portimao");
       if (loja === `37°09'30.3"N 8°36'51.5"W`) {
         setLojaSelecionada("Mexilhoeira");
       } else if (loja === `37°08'12.6"N 8°32'25.6"W`) {

@@ -96,7 +96,7 @@ const Checkout = () => {
       }
     );
   };
-
+  
   const {
     error,
     stripe,
@@ -124,7 +124,6 @@ const Checkout = () => {
     isCouponAvailable,
     handleDefaultShippingAddress,
   } = useCheckoutSubmit();
-
 
   return (
     <>
