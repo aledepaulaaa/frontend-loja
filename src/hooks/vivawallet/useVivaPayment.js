@@ -15,15 +15,15 @@ export default function usePaymentVivaWallet() {
         try {
             const payment = await axios.post(urlProduction, paymentData)
 
-            if(payment.status === 200){
+            // Limpar o carrinho se for um pagamento bem-sucedido
+            if (payment.status === 200) {
                 emptyCart()
-                setPaymentData(response)
+            } else {
+                console.log("Erro ao criar ordem de pagamento.")
             }
-
-            const response = payment.data
             // Redirecionar o usuário para o checkout da Viva Wallet
-            if (response.orderCode) {
-                window.location.href = `https://demo.vivapayments.com/web/checkout?ref=${response.orderCode}`;
+            if (payment.data.orderCode) {
+                window.location.href = `https://demo.vivapayments.com/web/checkout?ref=${payment.data.orderCode}`;
             } else {
                 throw new Error("Código do pedido não retornado.");
             }
