@@ -99,6 +99,8 @@ const useCheckoutSubmit = (storeSetting) => {
   const totalPrice = Math.round(total * 100)
  
   const submitHandler = async (data) => {
+    console.log('Submit chamado');
+
     try {
       setIsCheckoutSubmit(true);
       setError("");
