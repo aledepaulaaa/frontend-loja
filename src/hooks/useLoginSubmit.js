@@ -49,7 +49,7 @@ const useLoginSubmit = () => {
         router.push(url);
       }
     } catch (error) {
-      console.log("Erro ao tentar fazer login", error);
+      console.log("Ocorreu um erro ao tentar fazer login", error);
     } finally {
       setLoading(false)
     }
