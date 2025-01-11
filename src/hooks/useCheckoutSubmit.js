@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useCart } from "react-use-cart";
 import useRazorpay from "react-razorpay";
 
 //internal import
@@ -264,7 +263,6 @@ const useCheckoutSubmit = (storeSetting) => {
 
   return {
     register,
-    emptyCart,
     lojaSelecionada,
     errors,
     showCard,
