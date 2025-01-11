@@ -30,26 +30,32 @@ const useLoginSubmit = () => {
 
   const submitHandler = async ({ email, password }) => {
     setLoading(true);
-    const result = await signIn("credentials", {
-      redirect: false, // Changed to false to handle redirection manually
-      email,
-      password,
-      callbackUrl: "/user/dashboard",
-    });
+    try {
+      const result = await signIn("credentials", {
+        redirect: true, // Changed to false to handle redirection manually
+        email,
+        password,
+        callbackUrl: "/user/dashboard",
+      });
 
-    setLoading(false);
-    // console.log("result", result, "redirectUrl", redirectUrl);
+      setLoading(false);
+      // console.log("result", result, "redirectUrl", redirectUrl);
 
-    if (result?.error) {
-      notifyError(result?.error);
-      console.error("Error during sign-in:", result.error);
-      // Handle error display here
-    } else if (result?.ok) {
-      const url = redirectUrl ? "/checkout" : result.url;
-      console.log("url", url);
-      router.push(url);
+      if (result.status === 401) {
+        notifyError("Problema ao fazer login, verifique suas credenciais.");
+        console.log("Erro ao tentar fazer login:", result.error);
+        // Handle error display here
+      } else if (result?.ok) {
+        const url = redirectUrl ? "/checkout" : result.url;
+        console.log("url", url);
+        router.push(url);
+      }
+    } catch (error) {
+      console.log("Erro ao tentar fazer login", error);
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
   const submitHandlerRegister = async (e) => {
     e.preventDefault()
