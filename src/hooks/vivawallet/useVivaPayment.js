@@ -11,7 +11,7 @@ export default function usePaymentVivaWallet() {
     // Função para gerar o token no servidor e gerar o pagamento
     const useVivaPayment = async (paymentData) => {
         try {
-            const payment = await axios.post(urlProduction, paymentData)
+            const payment = await axios.post(urlDevelopment, paymentData)
             const response = payment.data
             setPaymentData(response)
 
