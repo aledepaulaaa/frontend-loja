@@ -32,13 +32,12 @@ const useLoginSubmit = () => {
     setLoading(true);
     try {
       const result = await signIn("credentials", {
-        redirect: true, // Changed to false to handle redirection manually
+        redirect: false, // Changed to false to handle redirection manually
         email,
         password,
         callbackUrl: "/user/dashboard",
       });
 
-      setLoading(false);
       // console.log("result", result, "redirectUrl", redirectUrl);
 
       if (result?.error) {
