@@ -97,7 +97,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Converte o valor total para centavos
   const totalPrice = Math.round(total * 100)
- 
+
   const submitHandler = async (data) => {
 
     try {
@@ -163,7 +163,7 @@ const useCheckoutSubmit = (storeSetting) => {
           zipCode: data.zipCode,
         },
       });
-      
+
     } catch (err) {
       notifyError(err ? err?.response?.data?.message : err?.message);
       setIsCheckoutSubmit(false);
@@ -248,19 +248,20 @@ const useCheckoutSubmit = (storeSetting) => {
     }
   };
 
-    // Buscar no localStorage a loja escolhida e atualizar com o hook
-    const getStoreSelected = () => {
-      const loja = localStorage.getItem("mexilhoeira" ? "mexilhoeira" : "portimao");
-      if (loja === `37°09'30.3"N 8°36'51.5"W`) {
-        setLojaSelecionada("Mexilhoeira");
-      } else if (loja === `37°08'12.6"N 8°32'25.6"W`) {
-        setLojaSelecionada("Portimão");
-      }
+  const getStoreSelected = () => {
+    const portimao = localStorage.getItem("portimao");
+    const mexilhoeira = localStorage.getItem("mexilhoeira");
+
+    if (portimao) {
+      setLojaSelecionada("Portimão");
+    } else if (mexilhoeira) {
+      setLojaSelecionada("Mexilhoeira");
     }
-  
-    useEffect(() => {
-      getStoreSelected()
-    }, [lojaSelecionada])
+  }
+
+  useEffect(() => {
+    getStoreSelected();
+  }, [])
 
   return {
     register,
