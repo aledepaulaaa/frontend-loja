@@ -97,6 +97,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Converte o valor total para centavos
   const totalPrice = Math.round(total * 100)
+  const nameSlug = items?.map((product) => product.slug).join(",");
 
   const submitHandler = async (data) => {
 
@@ -128,7 +129,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
       const orderPaymentData = {
         "amount": totalPrice,
-        "customerTrns": `Loja: ${lojaSelecionada}`,
+        "customerTrns": `Produto: ${nameSlug}`,
         "customer": {
           "email": userDetails.email,
           "fullName": userDetails.name,
@@ -136,6 +137,7 @@ const useCheckoutSubmit = (storeSetting) => {
           "countryCode": 978,
           "requestLang": "pt",
         },
+        "dynamicDescriptor": `Loja: ${lojaSelecionada}`,
         "paymentTimeout": 1800,
         "preauth": false,
         "allowRecurring": false,
@@ -143,9 +145,24 @@ const useCheckoutSubmit = (storeSetting) => {
         "paymentNotification": true,
         "tipAmount": 0,
         "disableExactAmount": false,
-        "disableCash": true,
+        "disableCash": false,
         "disableWallet": true,
         "sourceCode": "Default",
+        "klarnaOrderOptions": {
+          "shippingAddress": {
+            "city": userDetails.city,
+            "email": userDetails.email,
+            "phone": userDetails.contact,
+            "country": userDetails.country,
+            "streetAddress": userDetails.address,
+          },
+          "orderLines:": [
+            {
+              "name": "Produto: " + nameSlug,
+              "totalAmount": totalPrice,
+            },
+          ],
+        }
       }
 
       await useVivaPayment(orderPaymentData);
