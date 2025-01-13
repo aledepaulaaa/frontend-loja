@@ -101,7 +101,6 @@ const useCheckoutSubmit = (storeSetting) => {
   // Acessando o primeiro item do array, se ele existir
   const categoryName = items.length > 0 ? items[0].category.name.pt : "";
   const quantityItems = items.length > 0 ? items[0].quantity : "";
-  const imageUrl = items.length > 0 ? items[0].image : "";
 
   const submitHandler = async (data) => {
 
@@ -207,7 +206,7 @@ const useCheckoutSubmit = (storeSetting) => {
               "taxRate": 0,
               "quantity": quantityItems,
               "unitPrice": totalPrice,
-              "imageUrl": imageUrl,
+              "imageUrl": "",
               "reference": "string",
               "totalAmount": totalPrice,
               "productUrl": "string",
@@ -238,7 +237,7 @@ const useCheckoutSubmit = (storeSetting) => {
               "total_discount_amount": 0,
               "total_tax_amount": 0,
               "product_url": "",
-              "image_url": imageUrl,
+              "image_url": "",
             }
           ]
         }
