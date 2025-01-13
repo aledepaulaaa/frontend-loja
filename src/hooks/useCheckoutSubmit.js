@@ -99,6 +99,7 @@ const useCheckoutSubmit = (storeSetting) => {
   const totalPrice = Math.round(total * 100)
   const categoryName = items.map((item) => item.category.name.pt);
   const quantityItems = items.map((item) => item.quantity);
+  const imageUrl = items.map((item) => item.image);
 
   const submitHandler = async (data) => {
 
@@ -201,14 +202,14 @@ const useCheckoutSubmit = (storeSetting) => {
           },
           "orderLines": [
             {
-              "name": orderInfo.cart.map((item) => item.category.name),
+              "name": userDetails.name,
               "type": "physical",
               "taxRate": 0,
-              "quantity": orderInfo.cart.map((item) => item.quantity),
-              "unitPrice": orderInfo.cart.map((item) => item.itemTotal),
-              "imageUrl": orderInfo.cart.map((item) => item.image),
+              "quantity": quantityItems ,
+              "unitPrice": totalPrice,
+              "imageUrl": imageUrl,
               "reference": "string",
-              "totalAmount": orderInfo.cart.map((item) => item.itemTotal),
+              "totalAmount": totalPrice,
               "productUrl": "string",
               "merchantData": "string",
               "quantityUnit": "pcs",
@@ -229,15 +230,15 @@ const useCheckoutSubmit = (storeSetting) => {
               }
             },
             {
-              "name": orderInfo.cart.map((item) => item.category.name),
-              "quantity": orderInfo.cart.map((item) => item.quantity),
-              "unit_price": orderInfo.cart.map((item) => item.itemTotal),
+              "name": categoryName,
+              "quantity": quantityItems,
+              "unit_price": totalPrice,
               "tax_rate": 0,
-              "total_amount": orderInfo.cart.map((item) => item.itemTotal),
+              "total_amount": totalPrice,
               "total_discount_amount": 0,
               "total_tax_amount": 0,
-              "product_url": orderInfo.cart.map((item) => item.id),
-              "image_url": orderInfo.cart.map((item) => item.image),
+              "product_url": "",
+              "image_url": imageUrl,
             }
           ]
         }
