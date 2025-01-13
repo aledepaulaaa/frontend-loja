@@ -97,9 +97,11 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Converte o valor total para centavos
   const totalPrice = Math.round(total * 100)
-  const categoryName = items.map((item) => item.category.name.pt);
-  const quantityItems = items.map((item) => item.quantity);
-  const imageUrl = items.map((item) => item.image);
+
+  // Acessando o primeiro item do array, se ele existir
+  const categoryName = items.length > 0 ? items[0].category.name.pt : "";
+  const quantityItems = items.length > 0 ? items[0].quantity : "";
+  const imageUrl = items.length > 0 ? items[0].image : "";
 
   const submitHandler = async (data) => {
 
@@ -203,7 +205,7 @@ const useCheckoutSubmit = (storeSetting) => {
               "name": userDetails.name,
               "type": "physical",
               "taxRate": 0,
-              "quantity": quantityItems ,
+              "quantity": quantityItems,
               "unitPrice": totalPrice,
               "imageUrl": imageUrl,
               "reference": "string",
