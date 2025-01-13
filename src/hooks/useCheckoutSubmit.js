@@ -97,7 +97,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Converte o valor total para centavos
   const totalPrice = Math.round(total * 100)
-  const nameSlug  = items?.map((product) => product.category[0].name).join(",");
+  const nameSlug  = items?.map((product) => product.category).join(",");
 
   const submitHandler = async (data) => {
 
