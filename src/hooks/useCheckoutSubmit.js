@@ -129,8 +129,6 @@ const useCheckoutSubmit = (storeSetting) => {
         total: total,
       };
 
-      console.log("Items: ", items);
-
       const orderPaymentData = {
         "amount": totalPrice,
         "customerTrns": `Loja: ${lojaSelecionada}`,
