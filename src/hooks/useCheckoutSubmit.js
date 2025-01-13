@@ -97,6 +97,8 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Converte o valor total para centavos
   const totalPrice = Math.round(total * 100)
+  const categoryName = items.map((item) => item.category.name.pt);
+  const quantityItems = items.map((item) => item.quantity);
 
   const submitHandler = async (data) => {
 
@@ -126,6 +128,8 @@ const useCheckoutSubmit = (storeSetting) => {
         total: total,
       };
 
+      console.log("Items: ", items);
+
       const orderPaymentData = {
         "amount": totalPrice,
         "customerTrns": `Loja: ${lojaSelecionada}`,
@@ -136,18 +140,108 @@ const useCheckoutSubmit = (storeSetting) => {
           "countryCode": 978,
           "requestLang": "pt",
         },
+        "dynamicDescriptor": "Categoria: " + categoryName,
+        "currencyCode": 978,
         "paymentTimeout": 1800,
         "preauth": false,
         "allowRecurring": false,
         "maxInstallments": 12,
+        "merchantTrns": `Quantidade: ${quantityItems}`,
         "paymentNotification": true,
         "tipAmount": 0,
         "disableExactAmount": false,
-        "disableCash": true,
+        "disableCash": false,
         "disableWallet": true,
         "sourceCode": "Default",
+        "tags": [
+          "tag 1",
+          "tag 2"
+        ],
+        "paymentMethodFees": {
+          "paymentMethodId": "",
+          "fee": 0
+        },
+        "cardTokens": [
+          ""
+        ],
+        "isCardVerification": false,
+        "nbgLoanOrderOptions": {
+          "Code": "",
+          "ReceiptType": 0
+        },
+        "klarnaOrderOptions": {
+          "attachment": {
+            "body": "string",
+            "contentType": "string"
+          },
+          "billingAddress": {
+            "city": userDetails.city,
+            "email": userDetails.email,
+            "phone": userDetails.contact,
+            "title": userDetails.name,
+            "region": userDetails.city,
+            "country": userDetails.country,
+            "givenName": userDetails.name,
+            "familyName": userDetails.name,
+            "postalCode": userDetails.zipCode,
+            "streetAddress": userDetails.address,
+            "streetAddress2": ""
+          },
+          "shippingAddress": {
+            "city": userDetails.city,
+            "email": userDetails.email,
+            "region": userDetails.city,
+            "phone": userDetails.contact,
+            "country": userDetails.country,
+            "givenName": userDetails.name,
+            "familyName": userDetails.name,
+            "postalCode": userDetails.zipCode,
+            "streetAddress": userDetails.address,
+            "streetAddress2": ""
+          },
+          "orderLines": [
+            {
+              "name": orderInfo.cart.map((item) => item.category.name),
+              "type": "physical",
+              "taxRate": 0,
+              "quantity": orderInfo.cart.map((item) => item.quantity),
+              "unitPrice": orderInfo.cart.map((item) => item.itemTotal),
+              "imageUrl": orderInfo.cart.map((item) => item.image),
+              "reference": "string",
+              "totalAmount": orderInfo.cart.map((item) => item.itemTotal),
+              "productUrl": "string",
+              "merchantData": "string",
+              "quantityUnit": "pcs",
+              "totalTaxAmount": 0,
+              "totalDiscountAmount": 0,
+              "subscription": {
+                "name": "string",
+                "interval": "string",
+                "intervalCount": 0
+              },
+              "productIdentifiers": {
+                "size": "string",
+                "brand": "string",
+                "color": "string",
+                "categoryPath": "string",
+                "globalTradeItemNumber": "",
+                "manufacturerPartNumber": ""
+              }
+            },
+            {
+              "name": orderInfo.cart.map((item) => item.category.name),
+              "quantity": orderInfo.cart.map((item) => item.quantity),
+              "unit_price": orderInfo.cart.map((item) => item.itemTotal),
+              "tax_rate": 0,
+              "total_amount": orderInfo.cart.map((item) => item.itemTotal),
+              "total_discount_amount": 0,
+              "total_tax_amount": 0,
+              "product_url": orderInfo.cart.map((item) => item.id),
+              "image_url": orderInfo.cart.map((item) => item.image),
+            }
+          ]
+        }
       }
-
       await useVivaPayment(orderPaymentData);
 
       await CustomerServices.addShippingAddress({

@@ -52,9 +52,11 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                   </div>
                 </div>
                 {storeCustomizationSetting?.home?.promotion_banner_status && (
-                  <div className="bg-orange-100 px-10 py-6 rounded-lg mt-6">
-                    <Banner />
-                  </div>
+                  <>
+                  </>
+                  // <div className="bg-orange-100 px-10 py-6 rounded-lg mt-6">
+                  //   <Banner />
+                  // </div>
                 )}
               </div>
             </div>
@@ -62,36 +64,38 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
             <RedirecionarLojas />
             {/* feature category's */}
             {storeCustomizationSetting?.home?.featured_status && (
-              <div className="bg-gray-100 lg:py-16 py-10">
-                <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                  <div className="mb-10 flex justify-center">
-                    <div className="text-center w-full lg:w-2/5">
-                      <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
-                        <CMSkeleton
-                          count={1}
-                          height={30}
-                          // error={error}
-                          loading={loading}
-                          data={storeCustomizationSetting?.home?.feature_title}
-                        />
-                      </h2>
-                      <p className="text-base font-sans text-gray-600 leading-6">
-                        <CMSkeleton
-                          count={4}
-                          height={10}
-                          error={error}
-                          loading={loading}
-                          data={
-                            storeCustomizationSetting?.home?.feature_description
-                          }
-                        />
-                      </p>
-                    </div>
-                  </div>
+              <>
+              </>
+              // <div className="bg-gray-100 lg:py-16 py-10">
+              //   <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+              //     <div className="mb-10 flex justify-center">
+              //       <div className="text-center w-full lg:w-2/5">
+              //         <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
+              //           <CMSkeleton
+              //             count={1}
+              //             height={30}
+              //             // error={error}
+              //             loading={loading}
+              //             data={storeCustomizationSetting?.home?.feature_title}
+              //           />
+              //         </h2>
+              //         <p className="text-base font-sans text-gray-600 leading-6">
+              //           <CMSkeleton
+              //             count={4}
+              //             height={10}
+              //             error={error}
+              //             loading={loading}
+              //             data={
+              //               storeCustomizationSetting?.home?.feature_description
+              //             }
+              //           />
+              //         </p>
+              //       </div>
+              //     </div>
 
-                  <FeatureCategory />
-                </div>
-              </div>
+              //     {/* <FeatureCategory /> */}
+              //   </div>
+              // </div>
             )}
 
             {/* popular products */}
