@@ -97,7 +97,6 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Converte o valor total para centavos
   const totalPrice = Math.round(total * 100)
-  const nameSlug  = items?.map((product) => product.category).join(",");
 
   const submitHandler = async (data) => {
 
@@ -129,7 +128,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
       const orderPaymentData = {
         "amount": totalPrice,
-        "customerTrns": `Produto: ${nameSlug}`,
+        "customerTrns": `Loja: ${lojaSelecionada}`,
         "customer": {
           "email": userDetails.email,
           "fullName": userDetails.name,
@@ -137,7 +136,6 @@ const useCheckoutSubmit = (storeSetting) => {
           "countryCode": 978,
           "requestLang": "pt",
         },
-        "dynamicDescriptor": `Loja: ${lojaSelecionada}`,
         "paymentTimeout": 1800,
         "preauth": false,
         "allowRecurring": false,
@@ -145,7 +143,7 @@ const useCheckoutSubmit = (storeSetting) => {
         "paymentNotification": true,
         "tipAmount": 0,
         "disableExactAmount": false,
-        "disableCash": false,
+        "disableCash": true,
         "disableWallet": true,
         "sourceCode": "Default",
       }
