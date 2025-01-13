@@ -230,7 +230,7 @@ const useCheckoutSubmit = (storeSetting) => {
             },
             {
               "name": "string",
-              "quantity": "string",
+              "quantity": 1,
               "unit_price": 0,
               "tax_rate": 0,
               "total_amount": 0,
