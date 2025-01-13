@@ -100,7 +100,7 @@ const useCheckoutSubmit = (storeSetting) => {
 
   // Acessando o primeiro item do array, se ele existir
   const categoryName = items.length > 0 ? items[0].category.name.pt : "";
-  const quantityItems = items.length > 0 ? items[0].quantity : "";
+  const quantityItems = items.map((item) => item.quantity)
 
   const submitHandler = async (data) => {
 
@@ -204,11 +204,11 @@ const useCheckoutSubmit = (storeSetting) => {
               "name": userDetails.name,
               "type": "physical",
               "taxRate": 0,
-              "quantity": quantityItems,
-              "unitPrice": totalPrice,
+              "quantity": "",
+              "unitPrice": "",
               "imageUrl": "",
               "reference": "string",
-              "totalAmount": totalPrice,
+              "totalAmount": "",
               "productUrl": "string",
               "merchantData": "string",
               "quantityUnit": "pcs",
@@ -229,11 +229,11 @@ const useCheckoutSubmit = (storeSetting) => {
               }
             },
             {
-              "name": categoryName,
-              "quantity": quantityItems,
-              "unit_price": totalPrice,
+              "name": "string",
+              "quantity": "string",
+              "unit_price": 0,
               "tax_rate": 0,
-              "total_amount": totalPrice,
+              "total_amount": 0,
               "total_discount_amount": 0,
               "total_tax_amount": 0,
               "product_url": "",
