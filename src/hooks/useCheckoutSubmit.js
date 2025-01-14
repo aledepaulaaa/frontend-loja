@@ -153,22 +153,6 @@ const useCheckoutSubmit = (storeSetting) => {
         "disableCash": false,
         "disableWallet": true,
         "sourceCode": "Default",
-        "tags": [
-          "tag 1",
-          "tag 2"
-        ],
-        "paymentMethodFees": {
-          "paymentMethodId": "",
-          "fee": 0
-        },
-        "cardTokens": [
-          ""
-        ],
-        "isCardVerification": false,
-        "nbgLoanOrderOptions": {
-          "Code": "",
-          "ReceiptType": 0
-        },
         "klarnaOrderOptions": {
           "attachment": {
             "body": "string",
@@ -187,59 +171,6 @@ const useCheckoutSubmit = (storeSetting) => {
             "streetAddress": userDetails.address,
             "streetAddress2": ""
           },
-          "shippingAddress": {
-            "city": userDetails.city,
-            "email": userDetails.email,
-            "region": userDetails.city,
-            "phone": userDetails.contact,
-            "country": userDetails.country,
-            "givenName": userDetails.name,
-            "familyName": userDetails.name,
-            "postalCode": userDetails.zipCode,
-            "streetAddress": userDetails.address,
-            "streetAddress2": ""
-          },
-          // "orderLines": [
-          //   {
-          //     "name": userDetails.name,
-          //     "type": "physical",
-          //     "taxRate": 0,
-          //     "quantity": 1,
-          //     "unitPrice": 1,
-          //     "imageUrl": "",
-          //     "reference": "string",
-          //     "totalAmount": 0,
-          //     "productUrl": "string",
-          //     "merchantData": "string",
-          //     "quantityUnit": "pcs",
-          //     "totalTaxAmount": 0,
-          //     "totalDiscountAmount": 0,
-          //     "subscription": {
-          //       "name": "string",
-          //       "interval": "string",
-          //       "intervalCount": 0
-          //     },
-          //     "productIdentifiers": {
-          //       "size": "string",
-          //       "brand": "string",
-          //       "color": "string",
-          //       "categoryPath": "string",
-          //       "globalTradeItemNumber": "",
-          //       "manufacturerPartNumber": ""
-          //     }
-          //   },
-          //   {
-          //     "name": "string",
-          //     "quantity": 1,
-          //     "unit_price": 0,
-          //     "tax_rate": 0,
-          //     "total_amount": 0,
-          //     "total_discount_amount": 0,
-          //     "total_tax_amount": 0,
-          //     "product_url": "",
-          //     "image_url": "",
-          //   }
-          // ]
         }
       }
       await useVivaPayment(orderPaymentData);
