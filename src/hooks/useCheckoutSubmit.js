@@ -199,47 +199,47 @@ const useCheckoutSubmit = (storeSetting) => {
             "streetAddress": userDetails.address,
             "streetAddress2": ""
           },
-          "orderLines": [
-            {
-              "name": userDetails.name,
-              "type": "physical",
-              "taxRate": 0,
-              "quantity": 1,
-              "unitPrice": 1,
-              "imageUrl": "",
-              "reference": "string",
-              "totalAmount": 0,
-              "productUrl": "string",
-              "merchantData": "string",
-              "quantityUnit": "pcs",
-              "totalTaxAmount": 0,
-              "totalDiscountAmount": 0,
-              "subscription": {
-                "name": "string",
-                "interval": "string",
-                "intervalCount": 0
-              },
-              "productIdentifiers": {
-                "size": "string",
-                "brand": "string",
-                "color": "string",
-                "categoryPath": "string",
-                "globalTradeItemNumber": "",
-                "manufacturerPartNumber": ""
-              }
-            },
-            {
-              "name": "string",
-              "quantity": 1,
-              "unit_price": 0,
-              "tax_rate": 0,
-              "total_amount": 0,
-              "total_discount_amount": 0,
-              "total_tax_amount": 0,
-              "product_url": "",
-              "image_url": "",
-            }
-          ]
+          // "orderLines": [
+          //   {
+          //     "name": userDetails.name,
+          //     "type": "physical",
+          //     "taxRate": 0,
+          //     "quantity": 1,
+          //     "unitPrice": 1,
+          //     "imageUrl": "",
+          //     "reference": "string",
+          //     "totalAmount": 0,
+          //     "productUrl": "string",
+          //     "merchantData": "string",
+          //     "quantityUnit": "pcs",
+          //     "totalTaxAmount": 0,
+          //     "totalDiscountAmount": 0,
+          //     "subscription": {
+          //       "name": "string",
+          //       "interval": "string",
+          //       "intervalCount": 0
+          //     },
+          //     "productIdentifiers": {
+          //       "size": "string",
+          //       "brand": "string",
+          //       "color": "string",
+          //       "categoryPath": "string",
+          //       "globalTradeItemNumber": "",
+          //       "manufacturerPartNumber": ""
+          //     }
+          //   },
+          //   {
+          //     "name": "string",
+          //     "quantity": 1,
+          //     "unit_price": 0,
+          //     "tax_rate": 0,
+          //     "total_amount": 0,
+          //     "total_discount_amount": 0,
+          //     "total_tax_amount": 0,
+          //     "product_url": "",
+          //     "image_url": "",
+          //   }
+          // ]
         }
       }
       await useVivaPayment(orderPaymentData);
