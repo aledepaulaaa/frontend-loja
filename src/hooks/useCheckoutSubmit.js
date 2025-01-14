@@ -132,14 +132,14 @@ const useCheckoutSubmit = (storeSetting) => {
 
       const orderPaymentData = {
         "amount": totalPrice,
-        "customerTrns": `Loja: ${lojaSelecionada}`,
+        "customerTrns": `Endereço: ${userDetails.address} - ${userDetails.city} - ${userDetails.country} - ${userDetails.zipCode}`,
         "customer": {
           "email": userDetails.email,
           "fullName": userDetails.name,
           "phone": userDetails.contact,
           "requestLang": "pt",
         },
-        "dynamicDescriptor": `Endereço: ${userDetails.address} - ${userDetails.city} - ${userDetails.country} - ${userDetails.zipCode}`,
+        "dynamicDescriptor": `Loja: ${lojaSelecionada}`,
         "paymentTimeout": 1800,
         "preauth": false,
         "allowRecurring": false,
