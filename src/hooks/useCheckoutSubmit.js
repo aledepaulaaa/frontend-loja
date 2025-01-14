@@ -137,7 +137,6 @@ const useCheckoutSubmit = (storeSetting) => {
           "email": userDetails.email,
           "fullName": userDetails.name,
           "phone": userDetails.contact,
-          "countryCode": 978,
           "requestLang": "pt",
         },
         "dynamicDescriptor": "Categoria: " + categoryName,
