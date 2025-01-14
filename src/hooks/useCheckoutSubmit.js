@@ -10,12 +10,11 @@ import useRazorpay from "react-razorpay";
 import useAsync from "./useAsync";
 import { getUserSession } from "@lib/auth";
 import { UserContext } from "@context/UserContext";
-import OrderServices from "@services/OrderServices";
 import CouponServices from "@services/CouponServices";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
-import NotificationServices from "@services/NotificationServices";
 import usePaymentVivaWallet from "./vivawallet/useVivaPayment";
+
 
 const useCheckoutSubmit = (storeSetting) => {
   const { dispatch } = useContext(UserContext);
@@ -37,7 +36,7 @@ const useCheckoutSubmit = (storeSetting) => {
   const router = useRouter();
   const couponRef = useRef("");
   const [Razorpay] = useRazorpay();
-  const { isEmpty, items, cartTotal } = useCart();
+  const { isEmpty, items, cartTotal, updateItem } = useCart();
 
   const { useVivaPayment } = usePaymentVivaWallet();
 
@@ -99,8 +98,8 @@ const useCheckoutSubmit = (storeSetting) => {
   const totalPrice = Math.round(total * 100)
 
   // Acessando o primeiro item do array, se ele existir
-  const categoryName = items.length > 0 ? items[0].category.name.pt : "";
   const quantityItems = items.map((item) => item.quantity)
+  const skuNameProduct = items.map((item) => item.sku)
 
   const submitHandler = async (data) => {
 
@@ -139,12 +138,12 @@ const useCheckoutSubmit = (storeSetting) => {
           "phone": userDetails.contact,
           "requestLang": "pt",
         },
-        "dynamicDescriptor": `Loja: ${lojaSelecionada}`,
+        "dynamicDescriptor": `${lojaSelecionada}`,
         "paymentTimeout": 1800,
         "preauth": false,
         "allowRecurring": false,
         "maxInstallments": 12,
-        "merchantTrns": `Quantidade: ${quantityItems}`,
+        "merchantTrns": `${skuNameProduct} - Quantidade: ${quantityItems}`,
         "paymentNotification": true,
         "tipAmount": 0,
         "disableExactAmount": false,
@@ -152,7 +151,9 @@ const useCheckoutSubmit = (storeSetting) => {
         "disableWallet": true,
         "sourceCode": "Default",
       }
+
       await useVivaPayment(orderPaymentData);
+
 
       await CustomerServices.addShippingAddress({
         userId: userInfo?.id,

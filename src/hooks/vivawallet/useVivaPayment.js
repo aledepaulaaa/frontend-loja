@@ -7,7 +7,6 @@ const urlProduction = process.env.NEXT_PUBLIC_PRODUCTION_URL_PAYMENT
 
 export default function usePaymentVivaWallet() {
     const [error, setError] = React.useState(null)
-    const [paymentData, setPaymentData] = React.useState(null)
     const { emptyCart } = useCart()
 
     // Função para gerar o token no servidor e gerar o pagamento
