@@ -141,7 +141,6 @@ const useCheckoutSubmit = (storeSetting) => {
           "requestLang": "pt",
         },
         "dynamicDescriptor": "Categoria: " + categoryName,
-        "currencyCode": 978,
         "paymentTimeout": 1800,
         "preauth": false,
         "allowRecurring": false,
