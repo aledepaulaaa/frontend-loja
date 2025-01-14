@@ -139,7 +139,7 @@ const useCheckoutSubmit = (storeSetting) => {
           "phone": userDetails.contact,
           "requestLang": "pt",
         },
-        "dynamicDescriptor": "Categoria: " + categoryName,
+        "dynamicDescriptor": `Endereço: ${userDetails.address} - ${userDetails.city} - ${userDetails.country} - ${userDetails.zipCode}`,
         "paymentTimeout": 1800,
         "preauth": false,
         "allowRecurring": false,
@@ -151,25 +151,6 @@ const useCheckoutSubmit = (storeSetting) => {
         "disableCash": false,
         "disableWallet": true,
         "sourceCode": "Default",
-        "klarnaOrderOptions": {
-          "attachment": {
-            "body": "string",
-            "contentType": "string"
-          },
-          "billingAddress": {
-            "city": userDetails.city,
-            "email": userDetails.email,
-            "phone": userDetails.contact,
-            "title": userDetails.name,
-            "region": userDetails.city,
-            "country": userDetails.country,
-            "givenName": userDetails.name,
-            "familyName": userDetails.name,
-            "postalCode": userDetails.zipCode,
-            "streetAddress": userDetails.address,
-            "streetAddress2": ""
-          },
-        }
       }
       await useVivaPayment(orderPaymentData);
 
